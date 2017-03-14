@@ -44,3 +44,8 @@ One will be the "Joke" class, which will hold the data around a particular joke.
 
 The other will be the "Vote" class, which will be a domain object specifically for holding votes. This could be the votes for Jokes (which we will separate into "laugh-out-loud"s, also known as LOLs, and "groans"), but the intent will be that Votes could be used for other things (such as comments on a blog, or in a community portal). Please, however, do not use Vote for any sort of governmental election process.
 
+* *Generate the Vote class.* There are several ways to do this (including simply doing a "File|New" from your favorite text editor) but the easiest will be to allow the Angular-CLI to do the work for us. To do that, from a Terminal or Command Prompt window, type `ng generate class Vote --spec true`.
+
+* *Modify the Vote class.* We want the Vote class to have a private field `votes` (of type number), a single property `voteCount` that returns the number of votes in the `votes` field, and a method `increment` that will increment the vote count.
+
+* *Modify the Vote tests.* When Angular CLI generated the Vote class, we asked it to also generate a `.spec.ts` file, which is used to test the code. 
