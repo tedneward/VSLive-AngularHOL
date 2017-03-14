@@ -36,45 +36,11 @@ Before running the tests make sure you are serving the app via `ng serve`.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 
-## Step 0: Installation
+## Lab 1: Domain Models
 
-(This step should be done prior to the start of the workshop.)
+In this lab, we will build out two domain models for the rest of the workshop.
 
-After obtaining this code repository, make sure you have the proper tools installed. You will need:
+One will be the "Joke" class, which will hold the data around a particular joke.
 
-* *NodeJS.* As of this writing, the latest version is 7. Any flavor of v7 should work, but for reference purposes the authors wrote this with version 7.7.2. Use whatever installer is appropriate for your particular platform (Homebrew for the Mac, Chocolatey or Scoop for Windows, or whatever platform installer you use for your Linux machine), and verify the version installed by typing `node --version`.
-* *TypeScript.* As of this writing, TypeScript is at version 2.1. Make sure the `tsc` tool is available at the command-line, and if it is not, install it using the Node Package Manager (npm) by opening a Terminal or Command Prompt window and type `npm install -g typescript`.
-* *Angular CLI.* We will use the Angular CLI tool (`ng`) throughout this workshop, so it will help to have this installed before the workshop begins. Install it using `npm` again: `npm install -g @angular/cli`. Verify that the installation works by typing `ng --version` at the command line. It will respond with something similar to the following:
+The other will be the "Vote" class, which will be a domain object specifically for holding votes. This could be the votes for Jokes (which we will separate into "laugh-out-loud"s, also known as LOLs, and "groans"), but the intent will be that Votes could be used for other things (such as comments on a blog, or in a community portal). Please, however, do not use Vote for any sort of governmental election process.
 
-````
-    _                      _                 ____ _     ___
-   / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
-  / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
- / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
-/_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
-                |___/
-@angular/cli: 1.0.0-rc.1
-node: 7.7.2
-os: darwin x64
-@angular/common: 2.4.9
-@angular/compiler: 2.4.9
-@angular/core: 2.4.9
-@angular/forms: 2.4.9
-@angular/http: 2.4.9
-@angular/platform-browser: 2.4.9
-@angular/platform-browser-dynamic: 2.4.9
-@angular/router: 3.4.9
-@angular/cli: 1.0.0-rc.1
-@angular/compiler-cli: 2.4.9
-````
-
-* *Visual Studio Code.* Or some other text editor. **NOTE**: We have had difficulties with using Visual Studio itself for these sorts of projects, so we recommend not using Visual Studio itself until after some experience with Angular is had.
-* *Latest versions of browsers.* Our best experience working with Angular has been with Chrome, but Angular should be fine with any recent browser install. Note that Angular is known to have problems with earlier versions of certain browsers, most notably Internet Explorer, and this is not something that can be fixed within the scope of this workshop (if at all).
-
-To verify that all the tools are working, run through this brief step-by-step tutorial:
-
-* *Create a new Angular project.* From a Terminal or Command Prompt, type `ng new HelloApp`. This will use the Angular CLI to create a new directory (HelloApp) and scaffold in a basic HelloWorld application. This will also download a number of modules from the NPM Registry (npmjs.org), so you will need to be online to make this work. (In general, this will be true for any NodeJS-based application.)
-* *Begin "serving" the application locally.* Type `ng serve` in the HelloApp directory. It will package up the application and begin hosting it on port 4200. Open a browser to (http://localhost:4200) to view the resulting app.
-* *Edit the title.* Start Visual Studio Code from the HelloApp directory, and use it to open `src/app/app.component.ts`. Change the line `title = 'app works!'` to read `title = 'Hello, Angular!'`. Notice that the browser window will automatically recognize the change.
-
-At this point, you are ready for Lab 1. You can do a `git checkout lab-1` to switch over to that branch if you are not sure if you have everything working the way it's supposed to, but in general, any problems at this point will likely be due to environmental issues, and not anything to do with the Angular code base.
