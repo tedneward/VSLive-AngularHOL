@@ -46,25 +46,27 @@ After obtaining this code repository, make sure you have the proper tools instal
 * *TypeScript.* As of this writing, TypeScript is at version 2.1. Make sure the `tsc` tool is available at the command-line, and if it is not, install it using the Node Package Manager (npm) by opening a Terminal or Command Prompt window and type `npm install -g typescript`.
 * *Angular CLI.* We will use the Angular CLI tool (`ng`) throughout this workshop, so it will help to have this installed before the workshop begins. Install it using `npm` again: `npm install -g @angular/cli`. Verify that the installation works by typing `ng --version` at the command line. It will respond with something similar to the following:
 
-          _                      _                 ____ _     ___
-        / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
-        / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
-      / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
-      /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
-                    |___/
-      @angular/cli: 1.0.0-rc.1
-      node: 7.7.2
-      os: darwin x64
-      @angular/common: 2.4.9
-      @angular/compiler: 2.4.9
-      @angular/core: 2.4.9
-      @angular/forms: 2.4.9
-      @angular/http: 2.4.9
-      @angular/platform-browser: 2.4.9
-      @angular/platform-browser-dynamic: 2.4.9
-      @angular/router: 3.4.9
-      @angular/cli: 1.0.0-rc.1
-      @angular/compiler-cli: 2.4.9
+````
+    _                      _                 ____ _     ___
+   / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+  / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+ / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+/_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+                |___/
+@angular/cli: 1.0.0-rc.1
+node: 7.7.2
+os: darwin x64
+@angular/common: 2.4.9
+@angular/compiler: 2.4.9
+@angular/core: 2.4.9
+@angular/forms: 2.4.9
+@angular/http: 2.4.9
+@angular/platform-browser: 2.4.9
+@angular/platform-browser-dynamic: 2.4.9
+@angular/router: 3.4.9
+@angular/cli: 1.0.0-rc.1
+@angular/compiler-cli: 2.4.9
+````
 
 * *Visual Studio Code.* Or some other text editor. **NOTE**: We have had difficulties with using Visual Studio itself for these sorts of projects, so we recommend not using Visual Studio itself until after some experience with Angular is had.
 * *Latest versions of browsers.* Our best experience working with Angular has been with Chrome, but Angular should be fine with any recent browser install. Note that Angular is known to have problems with earlier versions of certain browsers, most notably Internet Explorer, and this is not something that can be fixed within the scope of this workshop (if at all).
