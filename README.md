@@ -77,4 +77,4 @@ To verify that all the tools are working, run through this brief step-by-step tu
 * *Begin "serving" the application locally.* Type `ng serve` in the HelloApp directory. It will package up the application and begin hosting it on port 4200. Open a browser to (http://localhost:4200) to view the resulting app.
 * *Edit the title.* Start Visual Studio Code from the HelloApp directory, and use it to open `src/app/app.component.ts`. Change the line `title = 'app works!'` to read `title = 'Hello, Angular!'`. Notice that the browser window will automatically recognize the change.
 
-At this point, you are ready for Lab 1.
+At this point, you are ready for Lab 1. You can do a `git checkout lab-1` to switch over to that branch if you are not sure if you have everything working the way it's supposed to, but in general, any problems at this point will likely be due to environmental issues, and not anything to do with the Angular code base.
