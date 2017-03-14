@@ -7,8 +7,11 @@ This README file contains the default Angular CLI-generated content, plus the la
 ## Reference links
 
 [TypeScript](https://github.com/Microsoft/TypeScript)
+
 [TypeScript Official Language Spec](https://github.com/Microsoft/TypeScript/tree/2.1/doc)
+
 [Angular Website TypeScript-flavored docs](https://angular.io/docs/ts/latest/)
+
 [Angular Cheat-Sheet](https://angular.io/docs/ts/latest/guide/cheatsheet.html)
 
 ## Angular CLI details
@@ -56,4 +59,6 @@ From the command-line, before any work is done, type `ng test`; this will open a
 
 * *Modify the Joke tests.* This time, TDD-style, modify the Joke tests first. (This will cause the tests to fail, which is expected; we fix that in the next step.) Modify the first test (the one already generated) to have the constructor take four parameters: one for the joke setup, one for the joke punchline, one for the LOLs Vote object, and one for the Groans Vote object. Then write a test that ensures that the Vote object makes these fields accessible from properties (named `setup`, `punchline`, `lols` and `groans`). (Normally these should be separate tests, but we'll shorten it up.) Write another test that uses the `incrementLol` method on Joke to increment the Vote count on the `lols` field object and get the result via the `lols` property. Write another test that does the same for the `groans` and the `incrementGroans` method.
 
-* *Modify the Joke class to pass the tests.* 
+* *Modify the Joke class to pass the tests.* This will require adding the four parameters to the constructor, the four properties, and the two methods. When the tests pass, you are done.
+
+At this point, the domain models are finished. If you are not sure if you got it all to work, you can always fast-forward to the next lab by doing a `git checkout lab-2`. 
