@@ -39,26 +39,36 @@ Before running the tests make sure you are serving the app via `ng serve`.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 
-## Lab 1: Domain Models
+## Lab 2: UpvoteComponent
 
-In this lab, we will build out two domain models for the rest of the workshop.
+(If `ng serve` is not running, start it in a Terminal or Command Prompt window so it will be running throughout the exercise.)
 
-One will be the "Joke" class, which will hold the data around a particular joke.
+In this lab, we will build out a component to track the votes as people "upvote" things. (Later, we will use the UpvoteComponent to vote up jokes, but we will start simple here.) We will build the component to take a Vote object, and first simply display the votes, then, to allow people to "upvote" a vote, display a button that increments the Vote object.
 
-The other will be the "Vote" class, which will be a domain object specifically for holding votes. This could be the votes for Jokes (which we will separate into "laugh-out-loud"s, also known as LOLs, and "groans"), but the intent will be that Votes could be used for other things (such as comments on a blog, or in a community portal). Please, however, do not use Vote for any sort of governmental election process.
+First, we will create a simple UpvoteComponent that wraps a Vote object.
 
-From the command-line, before any work is done, type `ng test`; this will open a browser window and run tests continuously while we are editing code, and will inform you if there are any breaking tests and/or code that does not compile. You can quit this at any time by typing "Ctrl-C" in the command-line window.
+* *Generate the UpvoteComponent.* Use the Angular CLI tool to create the UpvoteComponent by running `ng generate component upvote`. This will create the files `upvote.component.css` (CSS styling for this component), `upvote.component.html` (the view for the component), `upvote.component.spec.ts` (the tests) and `upvote.component.ts` (the logic code) in the `src/app/upvote` directory.
 
-* *Generate the Vote class.* There are several ways to do this (including simply doing a "File|New" from your favorite text editor) but the easiest will be to allow the Angular-CLI to do the work for us. To do that, from a Terminal or Command Prompt window, type `ng generate class Vote --spec true`. This will create two files: `src/app/vote.ts` and `src/app/vote.spec.ts`; the first is the actual Vote class, the second is the test suite for the Vote class.
+* *Modify the component to use a Vote.* Add a field (of type Vote) to the UpvoteComponent class in `upvote.component.ts`. We will use this to store the vote count and display it.
 
-* *Modify the Vote class.* We want the Vote class to have a private field `votes` (of type number), a single property `voteCount` that returns the number of votes in the `votes` field, and a method `increment` that will increment the vote count.
+* *Modify the component's view.* We will use a simple span tag to display the vote count, so open the view (in `upvote.component.html`), erase what's there, and replace it with a simple "span" tag that uses Angular string interpolation to display the Vote field's "voteCount" property.
 
-* *Modify the Vote tests.* When Angular CLI generated the Vote class, we asked it to also generate a `.spec.ts` file, which is used to test the code. Note that the existing test, which verifies that a constructor works, will not work as written, since we added a parameter to the constructor; fix this test by passing in a number for that parameter. Add two more tests to the test suite: one to verify that when a Vote is constructed with the value 10 as the constructor parameter, the `voteCount` property returns the same value, and the other to verify that when a Vote is constructed and then incremented, it returns the correct value.
+Once this is working, let's add the ability to set the votes as a tag parameter.
 
-* *Generate the Joke class.* Again, let Angular-CLI do the work: `ng generate class Joke --spec true`. This will be the `src/app/joke.ts` and `src/app/joke.spec.ts` files.
+* *Add a new field to the UpvoteComponent.* Add a "votes" field (of type number) to the UpvoteComponent. In time, we'll refactor this code to use a Vote object, but since we don't have one in the view, we'll work with a number for now.
 
-* *Modify the Joke tests.* This time, TDD-style, modify the Joke tests first. (This will cause the tests to fail, which is expected; we fix that in the next step.) Modify the first test (the one already generated) to have the constructor take four parameters: one for the joke setup, one for the joke punchline, one for the LOLs Vote object, and one for the Groans Vote object. Then write a test that ensures that the Vote object makes these fields accessible from properties (named `setup`, `punchline`, `lols` and `groans`). (Normally these should be separate tests, but we'll shorten it up.) Write another test that uses the `incrementLol` method on Joke to increment the Vote count on the `lols` field object and get the result via the `lols` property. Write another test that does the same for the `groans` and the `incrementGroans` method.
+* *Mark the "votes" field as importable.* This will require the use of @Input decorator.
 
-* *Modify the Joke class to pass the tests.* This will require adding the four parameters to the constructor, the four properties, and the two methods. When the tests pass, you are done.
+* *Construct the Vote object.* The Vote object is the model for the UpvoteComponent, and we don't want to get away from that, so use the `ngInit` method on UpvoteComponent to construct the Vote object for the `vote` field using the data passed in through the `votes` field.
 
-At this point, the domain models are finished. If you are not sure if you got it all to work, you can always fast-forward to the next lab by doing a `git checkout lab-2`. 
+* *Rewrite the "app-upvote" tag in the AppComponent view.* Open the `app.component.html` and change the "app-upvote" tag to include a "votes" attribute, with a numeric value. Make sure to use the property-binding syntax using square-brackets.
+
+Next, let's wire up the UpvoteComponent to recognize mouse-clicks to increment the vote count. (We could probably style the component's view to look like a button, but let's leave it be for now.)
+
+* *Create a new method to receive mouse-clicks.* Each time the user clicks on the HTML span, we want Angular to call a method. To do this, add a new method to UpvoteComponent; call it "clicked". Within this method, increment the vote count by calling the `vote` object's `increment()` method. (For some easy debugging purposes, add a "console.log" call that prints out the new vote count total.)
+
+* *Modify the UpvoteComponent view.* Now, in the opening "span" tag, add a "click" event handler (using the round-bracket event-binding syntax) to invoke the "clicked" method. Additionally, add the text "&#x25B2;" to the text inside the span--this Unicode character will translate to an up-arrow when rendered by the browser, and make it clear that the span is clickable.
+
+At this point, the UpvoteComponent holds some state in a model, and can react to user events. We're done with Lab 2.
+
+If you're not sure you got the exercise implemented correctly, feel free to fast-forward to the next lab via `git checkout lab-3`.
