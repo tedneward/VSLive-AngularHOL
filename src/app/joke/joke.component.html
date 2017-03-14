@@ -1,0 +1,5 @@
+<div>
+  {{model.setup}} <b>{{model.punchline}}</b>
+  LOLs: <app-upvote [model]="model.lolVote"  (onIncrement)="lolsUpvoted()"></app-upvote>
+  Groans: <app-upvote [model]="model.groanVote" (onIncrement)="groansUpvoted()"></app-upvote>
+</div>

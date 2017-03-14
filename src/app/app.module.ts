@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { UpvoteComponent } from './upvote/upvote.component';
+import { JokeComponent } from './joke/joke.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    UpvoteComponent
+    UpvoteComponent,
+    JokeComponent
   ],
   imports: [
     BrowserModule,

@@ -8,17 +8,21 @@ import { Vote } from '../vote';
 })
 export class UpvoteComponent implements OnInit {
 
-  @Input() private votes : number;
-  private vote : Vote;
+  @Input() private model : number | Vote;
+
+  @Output() private onIncrement = new EventEmitter<number>();
 
   constructor() { }
 
   ngOnInit() {
-    this.vote = new Vote(this.votes);
+    if (! (this.model instanceof Vote)) {
+      this.model = new Vote(this.model);
+    }
   }
 
   clicked() : void {
     console.log("Clicked!");
-    this.vote.increment();
+    (this.model as Vote).increment();
+    this.onIncrement.emit((this.model as Vote).voteCount);
   }
 }

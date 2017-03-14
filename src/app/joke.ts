@@ -12,4 +12,7 @@ export class Joke {
   public incrementLol() { this._lols.increment(); }
 
   public incrementGroan() { this._groans.increment(); }
+
+  public get lolVote() : Vote { return this._lols; }
+  public get groanVote() : Vote { return this._groans; }
 }
