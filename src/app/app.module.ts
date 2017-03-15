@@ -6,12 +6,16 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { UpvoteComponent } from './upvote/upvote.component';
 import { JokeComponent } from './joke/joke.component';
+import { JokelistComponent } from './jokelist/jokelist.component';
+import { JokeFilterPipe } from './joke-filter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     UpvoteComponent,
-    JokeComponent
+    JokeComponent,
+    JokelistComponent,
+    JokeFilterPipe
   ],
   imports: [
     BrowserModule,
