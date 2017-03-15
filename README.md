@@ -39,58 +39,53 @@ Before running the tests make sure you are serving the app via `ng serve`.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 
-## Lab 3: JokeComponent (and UpvoteComponent refactoring)
+## Lab 4: JokeListComponent
 
 (If `ng serve` is not running, start it in a Terminal or Command Prompt window so it will be running throughout the exercise.)
 
-In this lab, we will create a component to display jokes that in turn uses the UpvoteComponent to display the votes for a given Joke. This will mean that in addition to creating a new JokeComponent specifically to display a Joke, we will need to refactor the UpvoteComponent a little to allow events (mouse-clicks) from the UpvoteComponent to the JokeComponent so that the JokeComponent can be notified about it. However, after having done that, we will also modify the UpvoteComponent to accept a Vote object directly, so that the UpvoteComponent can modify the JokeComponent's Vote fields directly, and keep all state in the model (which in this case is the Joke).
+In this lab, we want to start "building up" to a more useful interface beyond the scope of a single Joke. If NgJoke is going to be a database of Jokes, we need to have a way of seeing an overview of all Jokes, then allowing users to "drill-down" into a single Joke in order to display it more fully. This is a classic "master-detail" user interface paradigm, and we will take it in two steps: first, we will build the "master" part of the user interface, and then, we will wire the "master" and "detail" parts together using Angular Routing.
 
-As you should be starting to get a little more familiar with Angular's syntax and concepts by now, we will start gradually making these lab instructions a little more general and less step-by-step. (Where we do something new, of course, we will drill into more detail.)
+But first, we need a little bit more of a Joke database...
 
-* *Generate JokeComponent.* By now, this should be starting to feel second-nature: use Angular CLI to generate a JokeComponent by running `ng generate component joke`. This will create four files in the `src/app/joke` directory.
-
-* *Modify JokeComponent to hold a Joke model.* Add a field to the JokeComponent's class of type Joke, and call it "model", since this will be the model for the JokeComponent itself. We will need a Joke instance, so for now, go ahead and construct one, either in the constructor or in the ngOnInit method.
-
-* *Modify JokeComponent to display the Joke.* In the JokeComponent's view, erase the generated HTML and replace it with a "div" tag that will display the joke's setup in normal text, the punchline in bold text right after it, and use the UpvoteComponent's selector syntax to display two vote counts, one for "lols" and one for "groans".
-
-* *Modfy AppComponent view to display the Joke.* Remember that the AppComponent view currently displays a vote count, so remove that from the view and put in its place the new "app-joke" tag.
-
-Once this is done, the new Joke should be displayed. But it is a hard-coded Joke, and we already know that we don't want to run with that forever, so let's go ahead and allow the Joke to be passed in as an input parameter in the AppComponent's view. Doing that will mean we need to have a Joke instance elsewhere to use, and there's a perfect place to provide that, on the root AppComponent itself (for now).
-
-* *Modify JokeComponent to take model as an input.* This will require only placing the @Input decorator on the `model` field in JokeComponent. The `model` field will now be initialized through the @Input mechanic, so the code used to initialize `model` to a Joke value can be either eliminated or commented out.
-
-* *Modify AppComponent's class to include a Joke collection.* Create a field in the AppComponent called "database", of type "Joke[]" (or "Array<Joke>"), and initialize it in place to an array of Jokes. (A sample Joke appears below for easy cut & paste:
+* *Modify AppComponent to include more jokes in `database`.* Right now, the AppComponent has an array of Jokes that contains only one Joke. Let's flesh that out to include a few more, bad as they are, so that we have at least three to work with. Feel free to put your own in here, or use our prepared list of (really bad) ones as a starting point:
 
 ````TypeScript
-  database : Joke[] = [
-    new Joke("Why did the milennial chicken cross the road?",
-      "Because it was his passion.",
+    new Joke("Why did the political chicken cross the road?",
+      "He didn't! ALTERNATIVE FACTS!",
+      new Vote(0),
+      new Vote(0))
+
+    new Joke("Why did the technical support chicken cross the road?",
+      "Because he heard that it worked on the computer over there.",
+      new Vote(0),
+      new Vote(2))
+
+    new Joke("Why did the speaker chicken cross the road?",
+      "I'm sorry, we don't really have time to take that question now, but if you'd like I can send you a consulting rate card...",
       new Vote(1),
       new Vote(27))
-  ];
 ````
-Please feel free to substitute your own joke if you do not care for ours.)
 
-* *Modify AppComponent's view to pass in the Joke instance.* In the AppComponent view, add a property-binding to initialize the "model" attribute on "app-joke" to the first element in the AppComponent's `database` field. (Recall that a template expression can be any non-side-effecting TypeScript expression, which includes array access.)
+Now we can get to the Joke master list.
 
-Now things get a little tricky. We want the UpvoteComponent to notify the JokeComponent any time the user upvotes either the LOLs or the groans, so we need to refactor UpvoteComponent to include an event that JokeComponent can hook in its view.
+* *Generate JokeListComponent.* For easy reference: `ng generate component jokelist`.
 
-* *Add an EventEmitter field to the UpvoteComponent.* Add a new field, called `onIncrement`, to the UpvoteComponent's class. This field should be of type `EventEmitter<number>`, since we will want to pass the numeric vote total to anyone interested in consuming this event. This field should be decorated with @Output, and go ahead and construct a new instance as part of the field declaration.
+* *Modify the JokeListComponent class.* The JokeList is going to need the full list of Jokes at its disposal in order to list them. For now, create a field (of type Joke array) called `jokes` that is marked as @Input so we can pass it in from the AppComponent. (In a future lab, we will actually fetch these from a remote service, but for now, obtaining them via the usual @Input mechanism will serve the same purpose.)
 
-* *Emit the event.* Modify the `clicked` method in the UpvoteComponent to call the `emit` method on `onIncrement`. This method will take a numeric parameter, thanks to the generic type parameter on EventEmitter, so pass the Vote object's current `voteCount` as the parameter.
+* *Modify the JokeListComponent view.* Use the `*ngFor` directive to iterate through each of the Jokes in the `jokes` field, and on each iteration, use the current Joke instance to display the Joke's `setup` string. (Remember to check the Angular Cheat Sheet if you aren't positive of the ngFor syntax. The asterisk ('*') is absolutely necessary, and not a typo, and the 'F' must be upper-case.)
 
-* *Modify JokeComponent to receive these events.* Add a method (`lolsUpvoted`) to the JokeComponent class that prints to the console when a LOL is upvoted. Do this again for groans (`groansUpvoted`). Go into the JokeComponent view and use the round-bracket event-binding syntax to bind each of these methods to the correspondong `<app-upvote>` tag. (We could write each of those methods to increment the Vote objects held in the Joke, but it would be better to have the UpvoteComponents do that directly, so as to minimize the amount of code that we have to maintain over time.)
+While we are at it, let's add a simple "search" facility that will allow users to search for jokes that match certain keywords. Doing so is easy given Angular's "pipes" facility, so let's create a pipe that will filter the list of Jokes to find one that contains the keyword specified in a text box in either the Joke's setup or punchline.
 
-Lastly, the JokeComponent needs to be able to pass the Joke's Vote objects directly to the UpvoteComponent, so that the UpvoteComponent can be modifying the Votes directly on a user click, rather than keeping state in several places at once. This will require a couple of steps.
+* *Modify the JokeListComponent view.* Add an input text field (with a "Search" label) so that the user can enter input. We will need to do several things to this input field in order to let it participate in a pipe. First, we need to introduce a local variable (call it `filter`) on the input text field to hold the data typed into the search field. Next, we will need to get Angular to react to keystrokes, and the easiest way to do that is to establish an event binding that does nothing--create a "keyup" event binding that simply binds to "0" (which is effectively a no-op). Finally, in the "ngFor" expression, pipe the list of jokes through a "jokeFilter", which will receive a single parameter, the `filter` variable's `value` property.
 
-* *Modify Joke to allow direct access to the Vote objects.* Right now, Joke encapsulates the Vote objects; we need to get access to them. Either mark the fields as public, or (our preference) create new property accessor methods to return the Vote object directly.
+* *Generate the JokeFilterPipe.* `ng generate pipe JokeFilter`, which will create two files in the `src/app` directory: `joke-filter.pipe.ts`, and `joke-filter.pipe.spec.ts`. (Yes, pipes can be unit-tested as well.)
 
-* *Modify UpvoteComponent to accept a Vote object as input.* Right now, the UpvoteComponent accepts a number through the `votes` field. It would be nice to be able to accept either a number or a Vote through the same attribute, and TypeScript's "intersection types" syntax will allow exactly that. First, modify the `vote` field's type by using an intersection type syntax of `number | Vote`. (You might want to take this opportunity to rename the `vote` field to `model`, as we did, for consistency, but if you do, make sure you do the same in the UpvoteComponent's view as well.) Next, in the `ngOnInit` method, use TypeScript's `instanceof` operator to test if the `vote` field is of type `Vote`--if it isn't, then we need to construct a Vote instance and store it in `model`. (See the note below for some discussion here.) Finally, in the `clicked` method, since this is an intersection type, you will need to cast (using TypeScript's `as` operator) the `vote` field to a Vote type in order to call its `increment` method, and again to obtain the `voteCount` property as part of the EventEmitter's `emit()` method call. (And if you have not done so already, delete the `votes` field from the UpvoteComponent's class, and modify the JokeComponent's view to use `vote` instead of `votes` in the `<app-upvote>` tags.)
+* *Modify the JokeFilterPipe class.* The pipe scaffolding allows nothing through (the transform method returns null), which means that the master list will be empty. We want the `transform` method to return only those Jokes (passed in `values`) that contain the search string (passed in `args`) in either the `setup` or `punchline` fields. To do that, import Joke, change the `args` parameter type from `any` to `Joke[]` (or `Array<Joke>`), and use the built-in `filter` method to take a function that returns the Joke if either of those fields contains the search string. (Hint: JavaScript/TypeScript strings have an `includes` method.)
 
-> **NOTE:** Using an intersection type here is arguably a little unorthodox, and arguably too subtle--others might prefer to have two specific attribute/@Input-decorated fields, one for a number parameter and the other for a Vote parameter. We choose to do this for two reasons here: one, because it is an excellent way to display TypeScript's versatility as a language, and two, because it makes a certain amount of sense and consistency to use the same parameter for both types of input. 
+Last minor nit: too often, in master-detail systems like this, when there's no results, the search area simply remains empty, rather than display something that will tell the user that no results were returning, leaving the user to wonder whether the website broke somehow. Let's use the Angular ngIf to display a message in the event that there's no Jokes to display.
 
-* *Modify the JokeComponent to prove the Joke model is being updated.* In the JokeComponent's "lolsUpvoted" and "groansUpvoted" methods, print out (via console.log)`model`'s LOL count and groan count, respectively, to prove that the UpvoteComponent is now operating directly on the Joke's Vote fields.
+* *Modify the JokeListComponent view.* Right after the search field, but before the list of results, add a new "div" tag pair. Inside the "div"s, put a message expressing sorrow that there are no results ("Sorry, no jokes match your request."). In the opening "div" tag, put an "ngIf" that uses a template expression to test the "jokes" collection's length to be zero. (Remember, "ngIf" only displays its element if the expression is true.) But wait! We actually want to test the results of the collection *after* it has passed through the search filter, so apply the JokeFilterPipe again, using the search field criteria, and take the `length` of that collection as a result. (You will need to use parentheses to guarantee precedence.)
 
-At this point, the JokeComponent is using UpvoteComponent to display its votes, is wired up against the UpvoteComponent's events, allows a Joke to be passed in (rather than hard-coding the Joke within it), and holds all state in a Joke model. We're done with Lab 3.
+At this point, the master list is shaping up nicely, but we have lost the ability to click on a joke to see the full display (and vote on the LOLs and groans). For the next step, we will add Angular Routing, to enable the URL to change (and thus be bookmarkable, so people can bookmark their favorite jokes, rather than always having to search through the list for them).
 
-If you're not sure you got the exercise implemented correctly, feel free to fast-forward to the next lab via `git checkout lab-4`.
+If you're not sure you got the exercise implemented correctly, feel free to fast-forward to the next lab via `git checkout lab-5`.
