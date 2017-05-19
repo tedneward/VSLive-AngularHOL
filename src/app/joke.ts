@@ -1,18 +1,19 @@
 import { Vote } from './vote';
 
 export class Joke {
-  constructor(private _setup : string, private _punchline: string, private _lols: Vote, private _groans: Vote) {
+  constructor(private _id: number, private _setup: string, private _punchline: string, private _lols: Vote, private _groans: Vote) {
   }
 
-  public get setup() : string { return this._setup; }
-  public get punchline() : string { return this._punchline; }
-  public get lols() : number { return this._lols.voteCount; }
-  public get groans() : number { return this._groans.voteCount; }
+  public get id(): number { return this._id; }
+  public get setup(): string { return this._setup; }
+  public get punchline(): string { return this._punchline; }
+  public get lols(): number { return this._lols.voteCount; }
+  public get groans(): number { return this._groans.voteCount; }
 
   public incrementLol() { this._lols.increment(); }
 
   public incrementGroan() { this._groans.increment(); }
 
-  public get lolVote() : Vote { return this._lols; }
-  public get groanVote() : Vote { return this._groans; }
+  public get lolVote(): Vote { return this._lols; }
+  public get groanVote(): Vote { return this._groans; }
 }
