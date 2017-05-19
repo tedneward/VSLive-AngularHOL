@@ -49,11 +49,11 @@ This means we want to have two routes: "jokes", pointing to the JokeListComponen
 
 First, we need to add Routing, which is (almost) entirely in the AppModule.
 
-* *Modify AppModule class.* Import `RouterModule` and `Routes` from `@angular/router`. Next, add a const global field `appRoutes`, of type `Routes`. In the "imports" array in the NgModule metadata decorator, use `RouterModule`'s `forRoot` method (passing in `appRoutes`) to import the necessary components into the module. (By convention, simply call that method inside the array, right alongside `BrowserModule` and `FormsModule`.)
+* *Modify AppModule class.* Import `RouterModule` and `Routes` from `@angular/router`. Next, add a const global field `appRoutes`, of type `Routes`. In the "imports" array in the NgModule metadata decorator, use `RouterModule`'s `forRoot` method (passing in `appRoutes`) to import the necessary components into the module. (By convention, simply call `forRoot` inside the array, right alongside `BrowserModule` and `FormsModule`.)
 
 * *Add the 'jokes' route.* In the `appRoutes` array, add a JSON literal that consists of two fields: 'path', set to "jokes", and 'component', set to "JokeListComponent". 
 
-* *Temporarily pass the Joke database through the route.* Since the JokeListComponent currently expects to receive an "Array<Joke>" (or Joke[]) passed in via an @Input tag, but we won't be explicitly using the tag once we start routing, we need to add a third field (called `data`) to the JSON literal. This array should be one element in size, a JSON object with one field, `jokes`, which in turn points to an array of Jokes. This array should (for now) be the "database" we established in AppComponent--you can either make the field in AppComponent public and static, import AppComponent and use it here directly, or move the whole collection of Joke objects we created in AppComponent directly here. (We won't use the AppComponent to store the database anymore after this, in fact.)
+* *Temporarily pass the Joke database through the route.* Since the JokeListComponent currently expects to receive an "Array<Joke>" (or Joke[]) passed in via an @Input tag, but we won't be explicitly using the tag once we start routing, we need to add a third field (called `data`) to the JSON literal. This array should be one element in size, a JSON object with one field, `jokes`, which points to an array of Jokes. This array should (for now) be the "database" we established in AppComponent--you can either make the field in AppComponent public and static, import AppComponent and use it here directly, or move the whole collection of Joke objects we created in AppComponent directly here. (We won't use the AppComponent to store the database anymore after this, in fact.)
 
 > **NOTE:** If it feels a little weird that we keep shuffling around the way we get the Joke data, don't be alarmed. In truth, these are all temporary measures until we establish the JokeService--which is the Angular-approved way of obtaining data--in the next lab. In a non-teaching project, we would set up the JokeService first, and wire it up to hand back the in-memory array until we were ready to access an HTTP endpoint for the data. That service would then be dependency-injected into any component that needed it, such as the JokeListComponent in this particular case. (And, again, we will do exactly that in the next lab.) Fortunately, moving the data around like this helps demonstrate several of the different mechanisms that Angular offers for using/storing collections of objects and/or data, so the exercise is not an entire waste of time.
 
@@ -65,7 +65,29 @@ If all this is done, the application will reload, but the main page will be empt
 
 Once this is done, the app will reload, and the URL "http://localhost:4200" will immediately redirect to "http://localhost:4200/jokes", and display the list of jokes again.
 
+Next we need to set up the routing so that "jokes/1" will display the first joke, and so on.
 
+* *Modify the appRoutes to add the new single-joke detail page.* Add a new route to the `appRoutes` that will redirect from "jokes/#" to the JokeComponent. This means that `path` will be set to "jokes/:jokeId", where "jokeId" will be a placeholder for the identifier that appears in the URL, which we'll retrieve from inside the JokeComponent. The `component` part of the route will be "JokeComponent". Additionally, to make it easier for the JokeComponent to obtain the full database of jokes, pass the database through the route again using a `data` field as part of the route, just as we did for the JokeListComponent route.
+
+* *Modify the JokeListComponent.* There's several steps here. First, the JokeComponent needs to receive an `ActivatedRoute` in the constructor, so we can access the route when it is invoked. The easiest way to do this is to simply make it a "private" parameter in the constructor, which will tuck it away in a field of the same name. Next, in ngOnInit, we need to extract the :jokeId part of the URL out of the `ActivatedRoute`, so take the route, access the `snapshot` field, and use that to access the `params` object. That in turn is a name/value pair of parameters (as one might surmise from the name), which should have `jokeId` as a name. (Case matters here.) That in turn should contain the value of the URL parameter passed in. However, we have one more step to go: we need the database of jokes, which (for the moment) is also coming from the `ActivatedRoute`, so use the `route.snapshot.data` object, access the first element of that object's array, and use that to obtain the database from the `jokes` field. Once the jokeId and the jokes database is retrieved, use the jokeId as an index into the jokes database to obtain the Joke instance, and store that into the JokeComponent's model field--and the rest of the JokeComponent will "just work".
+
+Test it in the browser by attempting to browse to http://localhost:4200/jokes/1 and see the joke.
+
+Lastly, we need to let the user select a joke from the list and take them to the joke's detail page. To do this, we'll add a "click" handler to the list, but there's one problem; we need to provide the jokeId parameter as part of the route to which we will navigate. Right now, that's been the index of the joke in the database array, but that's going to be tricky. And, realistically, each Joke would have its own identifier, given to it by the persistence layer. Since we're doing everything in memory, let's fake it and use those.
+
+* *Modify the Joke type to add an id field.* Just add it into the constructor, and add a get property method to retrieve it.
+
+* *Modify the database to include identifiers.* The identifiers don't need to be sequential, but they should each be unique.
+
+* *Modify the JokeComponent to use the identifier to find the joke from the database.* Use the `forEach` method on the database (which, remember, is just an array at this point) to find the joke whose id property matches the jokeId retrieved from the URL. (Take careful note of the types of each.)
+
+Now, we're ready to add the "click" handler to the JokelistComponent to route to the individual joke.
+
+* *Add a `Router` to the JokelistComponent constructor.* Again, this can just be a private parameter for easy storage.
+
+* *Add a `showJoke` method to the JokelistComponent.* This is going to expect one parameter, `joke`, of type `Joke`. Use the `navigate` method on the `Router` to navigate to the URL `'/jokes/' + joke.id`. (The parameter to `navigate` must be an array, even though we are only sending a single value here.)
+
+* *Add the click handler to JokelistComponent's HTML template.* This will appear on the `*ngFor` div element, as an attribute. Invoke the `showJoke` method passing in the `joke` from the for loop as a parameter.
 
 At this point, ....
 
