@@ -8,11 +8,11 @@ describe('Joke', () => {
   const groan = new Vote(1);
 
   it('should create an instance', () => {
-    expect(new Joke(setup, punchline, lol, groan)).toBeTruthy();
+    expect(new Joke(1, setup, punchline, lol, groan)).toBeTruthy();
   });
 
   it ('should store the constructor parameters as properties', () => {
-    const joke = new Joke(setup, punchline, lol, groan);
+    const joke = new Joke(1, setup, punchline, lol, groan);
     
     expect(joke.setup).toEqual(setup);
     expect(joke.punchline).toEqual(punchline);
@@ -21,7 +21,7 @@ describe('Joke', () => {
   });
 
   it('should increment Votes and recognize the results', () => {
-    const joke = new Joke(setup, punchline, lol, groan);
+    const joke = new Joke(1, setup, punchline, lol, groan);
 
     joke.incrementLol();
     expect(joke.lols).toEqual(2);
