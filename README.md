@@ -89,6 +89,6 @@ Now, we're ready to add the "click" handler to the JokelistComponent to route to
 
 * *Add the click handler to JokelistComponent's HTML template.* This will appear on the `*ngFor` div element, as an attribute. Invoke the `showJoke` method passing in the `joke` from the for loop as a parameter.
 
-At this point, ....
+At this point, we have routing in place. However, it's really becoming problematic working with the database, since we're spending a ton of time and effort passing it around to be in the place it needs to be all the time. This is clearly not a great state of affairs, so in the next (and final) lab, we're going to refactor all of that into an Angular service.
 
 If you're not sure you got the exercise implemented correctly, feel free to fast-forward to the next lab via `git checkout lab-6`.
