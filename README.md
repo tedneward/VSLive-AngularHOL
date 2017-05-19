@@ -69,12 +69,4 @@ At this point, we are done with the Hands-On Lab for Angular. You have successfu
 
 If you're not sure you got the exercise implemented correctly, feel free to fast-forward to the next lab via `git checkout final`.
 
-If you're curious how to extend this lab further, several thoughts come to mind:
-
-* *Add Bootstrap.* Let's be honest, you didn't come to this workshop to see a beautiful paragon of user interface design; if you did, you were probably deeply disappointed. Throw some Bootstrap in there and make it look all pretty. (This will involve adding the Bootstrap CSS to the index.html, and making use of it in the HTML templates; if you customize Bootstrap in some way, you can do that in the Bootstrap CSS files, or by leveraging the component's CSS files.)
-
-* *Use a middle-tier service.* Write some Express code that will be the HTTP API used to hold the data. (This is better than trying to access an HTTP database directly for a variety of reasons, although for some scenarios tha's a reasonable approach as well, particularly with a database like CouchDB.) Modify the JokeService to use Angular's HTTP facilities to access your Express middle-tier.
-
-* *Rewrite parts of the application to make use of Reactive objects and Observables.* This is one of the trickier parts of Angular to grok, but well worth the investment in time.
-
 
