@@ -9,10 +9,11 @@ import { UpvoteComponent } from './upvote/upvote.component';
 import { JokeComponent } from './joke/joke.component';
 import { JokelistComponent } from './jokelist/jokelist.component';
 import { JokeFilterPipe } from './joke-filter.pipe';
+import { JokeService } from './joke.service';
 
 const appRoutes: Routes = [
-  { path: 'jokes', component: JokelistComponent, data: [{ jokes: AppComponent.database }] },
-  { path: 'jokes/:jokeId', component: JokeComponent, data: [{ jokes: AppComponent.database }] },
+  { path: 'jokes', component: JokelistComponent },
+  { path: 'jokes/:jokeId', component: JokeComponent },
   { path: '', pathMatch: 'full', redirectTo: 'jokes' }
 ];
 
@@ -30,7 +31,7 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [JokeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AppComponent } from '../app.component';
+import { JokeService } from '../joke.service';
 import { Joke } from '../joke';
 
 @Component({
@@ -12,15 +13,14 @@ export class JokelistComponent implements OnInit {
 
   @Input() private jokes: Array<Joke>;
 
-  constructor(route: ActivatedRoute, private router: Router) {
-    this.jokes = route.snapshot.data[0]['jokes'];
+  constructor(private jokeService: JokeService, private router: Router) {
   }
 
   ngOnInit() {
+    this.jokes = this.jokeService.getJokes();
   }
 
   showJoke(joke: Joke) {
-    console.log('You chose the joke that starts... ', joke.setup);
     this.router.navigate(['/jokes/' + joke.id]);
   }
 

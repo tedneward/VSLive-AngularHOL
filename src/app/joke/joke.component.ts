@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { JokeService } from '../joke.service';
 import { Joke } from '../joke';
 import { Vote } from '../vote';
 
@@ -12,18 +13,13 @@ export class JokeComponent implements OnInit {
 
   @Input() private model: Joke;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private jokeService: JokeService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     const jokeId: number = this.route.snapshot.params['jokeId'];
-    const jokes = this.route.snapshot.data[0]['jokes'];
-
-    jokes.forEach( (it) => {
-      if (it.id == jokeId) {
-        this.model = it;
-      }
-    });
+    console.log('Looking up joke', jokeId);
+    this.model = this.jokeService.getJoke(jokeId);
   }
 
   public lolsUpvoted(): void {
