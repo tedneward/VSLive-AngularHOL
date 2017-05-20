@@ -1,4 +1,4 @@
-Search: <input type="text" #search (keyup)="0" size="40">
+Search: <input type="text" #filter (keyup)="0" size="40">
 
-<div *ngIf="(jokes | jokeFilter:search.value).length == 0"><em>Sorry, no jokes match your request.</em></div>
-<div *ngFor="let joke of jokes | jokeFilter:search.value" (click)="showJoke(joke)">{{joke.setup}}</div>
+<div *ngIf="(jokes | jokeFilter:filter.value).length == 0"><em>Sorry, no jokes match your request.</em></div>
+<div *ngFor="let joke of jokes | jokeFilter:filter.value" (click)="showJoke(joke)">{{joke.setup}}</div>
