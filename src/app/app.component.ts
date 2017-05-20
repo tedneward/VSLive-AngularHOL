@@ -25,7 +25,7 @@ export class AppComponent {
       'I\'m sorry, we don\'t really have time to take that question now, but if you\'d like I can send you a consulting rate card...',
       new Vote(1),
       new Vote(27))
-  ];
+    ];
 
   title = 'NgJokes';
 }

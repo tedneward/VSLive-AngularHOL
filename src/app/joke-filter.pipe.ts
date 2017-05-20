@@ -6,6 +6,10 @@ import { Joke } from './joke';
 })
 export class JokeFilterPipe implements PipeTransform {
   transform(value: Array<Joke>, args?: any): any {
-    return value.filter(joke => joke.setup.includes(args) || joke.punchline.includes(args));
+    if (value) {
+      return value.filter(joke => joke.setup.includes(args) || joke.punchline.includes(args));
+    } else {
+      return [];
+    }
   }
 }
