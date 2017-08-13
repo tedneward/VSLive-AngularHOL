@@ -7,8 +7,11 @@ This README file contains the default Angular CLI-generated content, plus the la
 ## Reference links
 
 [TypeScript](https://github.com/Microsoft/TypeScript)
+
 [TypeScript Official Language Spec](https://github.com/Microsoft/TypeScript/tree/2.1/doc)
+
 [Angular Website TypeScript-flavored docs](https://angular.io/docs/ts/latest/)
+
 [Angular Cheat-Sheet](https://angular.io/docs/ts/latest/guide/cheatsheet.html)
 
 ## Angular CLI details
@@ -36,45 +39,26 @@ Before running the tests make sure you are serving the app via `ng serve`.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 
-## Step 0: Installation
+## Lab 1: Domain Models
 
-(This step should be done prior to the start of the workshop.)
+In this lab, we will build out two domain models for the rest of the workshop.
 
-After obtaining this code repository, make sure you have the proper tools installed. You will need:
+One will be the "Joke" class, which will hold the data around a particular joke.
 
-* *NodeJS.* As of this writing, the latest version is 7. Any flavor of v7 should work, but for reference purposes the authors wrote this with version 7.7.2. Use whatever installer is appropriate for your particular platform (Homebrew for the Mac, Chocolatey or Scoop for Windows, or whatever platform installer you use for your Linux machine), and verify the version installed by typing `node --version`.
-* *TypeScript.* As of this writing, TypeScript is at version 2.1. Make sure the `tsc` tool is available at the command-line, and if it is not, install it using the Node Package Manager (npm) by opening a Terminal or Command Prompt window and type `npm install -g typescript`.
-* *Angular CLI.* We will use the Angular CLI tool (`ng`) throughout this workshop, so it will help to have this installed before the workshop begins. Install it using `npm` again: `npm install -g @angular/cli`. Verify that the installation works by typing `ng --version` at the command line. It will respond with something similar to the following:
+The other will be the "Vote" class, which will be a domain object specifically for holding votes. This could be the votes for Jokes (which we will separate into "laugh-out-loud"s, also known as LOLs, and "groans"), but the intent will be that Votes could be used for other things (such as comments on a blog, or in a community portal). Please, however, do not use Vote for any sort of governmental election process.
 
-````
-    _                      _                 ____ _     ___
-   / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
-  / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
- / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
-/_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
-                |___/
-@angular/cli: 1.0.0-rc.1
-node: 7.7.2
-os: darwin x64
-@angular/common: 2.4.9
-@angular/compiler: 2.4.9
-@angular/core: 2.4.9
-@angular/forms: 2.4.9
-@angular/http: 2.4.9
-@angular/platform-browser: 2.4.9
-@angular/platform-browser-dynamic: 2.4.9
-@angular/router: 3.4.9
-@angular/cli: 1.0.0-rc.1
-@angular/compiler-cli: 2.4.9
-````
+From the command-line, before any work is done, type `ng test`; this will open a browser window and run tests continuously while we are editing code, and will inform you if there are any breaking tests and/or code that does not compile. You can quit this at any time by typing "Ctrl-C" in the command-line window.
 
-* *Visual Studio Code.* Or some other text editor. **NOTE**: We have had difficulties with using Visual Studio itself for these sorts of projects, so we recommend not using Visual Studio itself until after some experience with Angular is had.
-* *Latest versions of browsers.* Our best experience working with Angular has been with Chrome, but Angular should be fine with any recent browser install. Note that Angular is known to have problems with earlier versions of certain browsers, most notably Internet Explorer, and this is not something that can be fixed within the scope of this workshop (if at all).
+* *Generate the Vote class.* There are several ways to do this (including simply doing a "File|New" from your favorite text editor) but the easiest will be to allow the Angular-CLI to do the work for us. To do that, from a Terminal or Command Prompt window, type `ng generate class Vote --spec true`. This will create two files: `src/app/vote.ts` and `src/app/vote.spec.ts`; the first is the actual Vote class, the second is the test suite for the Vote class.
 
-To verify that all the tools are working, run through this brief step-by-step tutorial:
+* *Modify the Vote class.* We want the Vote class to have a private field `votes` (of type number), a single property `voteCount` that returns the number of votes in the `votes` field, and a method `increment` that will increment the vote count.
 
-* *Create a new Angular project.* From a Terminal or Command Prompt, type `ng new HelloApp`. This will use the Angular CLI to create a new directory (HelloApp) and scaffold in a basic HelloWorld application. This will also download a number of modules from the NPM Registry (npmjs.org), so you will need to be online to make this work. (In general, this will be true for any NodeJS-based application.)
-* *Begin "serving" the application locally.* Type `ng serve` in the HelloApp directory. It will package up the application and begin hosting it on port 4200. Open a browser to (http://localhost:4200) to view the resulting app.
-* *Edit the title.* Start Visual Studio Code from the HelloApp directory, and use it to open `src/app/app.component.ts`. Change the line `title = 'app works!'` to read `title = 'Hello, Angular!'`. Notice that the browser window will automatically recognize the change.
+* *Modify the Vote tests.* When Angular CLI generated the Vote class, we asked it to also generate a `.spec.ts` file, which is used to test the code. Note that the existing test, which verifies that a constructor works, will not work as written, since we added a parameter to the constructor; fix this test by passing in a number for that parameter. Add two more tests to the test suite: one to verify that when a Vote is constructed with the value 10 as the constructor parameter, the `voteCount` property returns the same value, and the other to verify that when a Vote is constructed and then incremented, it returns the correct value.
 
-At this point, you are ready for Lab 1. You can do a `git checkout lab-1` to switch over to that branch if you are not sure if you have everything working the way it's supposed to, but in general, any problems at this point will likely be due to environmental issues, and not anything to do with the Angular code base.
+* *Generate the Joke class.* Again, let Angular-CLI do the work: `ng generate class Joke --spec true`. This will be the `src/app/joke.ts` and `src/app/joke.spec.ts` files.
+
+* *Modify the Joke tests.* This time, TDD-style, modify the Joke tests first. (This will cause the tests to fail, which is expected; we fix that in the next step.) Modify the first test (the one already generated) to have the constructor take four parameters: one for the joke setup, one for the joke punchline, one for the LOLs Vote object, and one for the Groans Vote object. Then write a test that ensures that the Vote object makes these fields accessible from properties (named `setup`, `punchline`, `lols` and `groans`). (Normally these should be separate tests, but we'll shorten it up.) Write another test that uses the `incrementLol` method on Joke to increment the Vote count on the `lols` field object and get the result via the `lols` property. Write another test that does the same for the `groans` and the `incrementGroans` method.
+
+* *Modify the Joke class to pass the tests.* This will require adding the four parameters to the constructor, the four properties, and the two methods. When the tests pass, you are done.
+
+At this point, the domain models are finished. If you are not sure if you got it all to work, you can always fast-forward to the next lab by doing a `git checkout lab-2`. 
